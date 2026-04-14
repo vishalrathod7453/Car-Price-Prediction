@@ -42,5 +42,6 @@ input_df = input_df.reindex(columns=columns, fill_value=0)
 # ---------------- PREDICTION ----------------
 if st.button("🔮 Predict Price"):
     prediction = model.predict(input_df)
-    st.success(f"💰 Predicted Price: ₹ {round(prediction[0], 2)} Lakhs")
+    st.success(f"💰 Predicted Price: ₹ {round(pred_value, 2)} Lakhs")
+
     st.balloons()

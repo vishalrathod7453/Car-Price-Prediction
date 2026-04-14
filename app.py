@@ -1,73 +1,64 @@
 import streamlit as st
 import pickle
 import numpy as np
-import requests
-from streamlit_lottie import st_lottie
 
-# 1. Page Configuration
-st.set_page_config(page_title="Car Value Predictor", page_icon="🚗", layout="wide")
+# ---------------- PAGE CONFIG ----------------
+st.set_page_config(page_title="Car Price Predictor", page_icon="🚗", layout="wide")
 
-# 2. Load Assets (Animation)
-def load_lottieurl(url):
-    r = requests.get(url)
-    if r.status_code != 200:
-        return None
-    return r.json()
+# ---------------- LOAD MODEL ----------------
+model = pickle.load(open("ModelCR.pkl", "rb"))
 
-lottie_car = load_lottieurl("https://assets9.lottiefiles.com/packages/lf20_96bovp06.json")
+# ---------------- CUSTOM CSS ----------------
+st.markdown("""
+    <style>
+    .main {
+        background-color: #f5f7fa;
+    }
+    .title {
+        text-align: center;
+        color: #2E86C1;
+        font-size: 40px;
+        font-weight: bold;
+    }
+    .result {
+        text-align: center;
+        color: green;
+        font-size: 30px;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-# 3. Load the Model
-with open('ModelCR.pkl', 'rb') as file:
-    model = pickle.load(file)
+# ---------------- TITLE ----------------
+st.markdown("<div class='title'>🚗 Car Price Prediction App</div>", unsafe_allow_html=True)
 
-# 4. Header Section
-st.title("🚗 Smart Car Price Estimator")
-st.write("Enter the vehicle details below to get an instant valuation powered by Machine Learning.")
+st.write("### Enter Car Details")
 
-col_anim, col_text = st.columns([1, 2])
-with col_anim:
-    st_lottie(lottie_car, height=200, key="car_anim")
-with col_text:
-    st.info("""
-    **Model Details:**
-    - Type: Linear Regression
-    - Features: 9 Vehicle Parameters
-    - Version: Scikit-Learn 1.6.1
-    """)
+# ---------------- INPUTS ----------------
+col1, col2, col3 = st.columns(3)
 
-st.markdown("---")
+with col1:
+    year = st.number_input("Year", min_value=2000, max_value=2025, value=2018)
+    present_price = st.number_input("Present Price (Lakhs)", value=5.0)
 
-# 5. User Input Form
-with st.container():
-    st.subheader("📋 Vehicle Specifications")
+with col2:
+    kms_driven = st.number_input("Kilometers Driven", value=30000)
+    owner = st.selectbox("Owner", [0, 1, 2, 3])
+
+with col3:
+    fuel_type = st.selectbox("Fuel Type", ["Petrol", "Diesel"])
+    transmission = st.selectbox("Transmission", ["Manual", "Automatic"])
+
+# ---------------- FEATURE ENGINEERING ----------------
+fuel = 1 if fuel_type == "Diesel" else 0
+trans = 1 if transmission == "Manual" else 0
+car_age = 2024 - year
+
+# ---------------- PREDICT ----------------
+if st.button("🔮 Predict Price"):
     
-    # Organizing 9 features into 3 columns
-    c1, c2, c3 = st.columns(3)
-    
-    with c1:
-        car_id = st.number_input("Car ID", min_value=1, value=1001)
-        brand = st.number_input("Brand (Encoded)", min_value=0, value=1)
-        year = st.number_input("Year", min_value=1990, max_value=2026, value=2020)
-        
-    with c2:
-        engine_size = st.number_input("Engine Size (L)", min_value=0.5, max_value=8.0, value=2.0, step=0.1)
-        fuel_type = st.number_input("Fuel Type (Encoded)", min_value=0, value=1)
-        transmission = st.number_input("Transmission (Encoded)", min_value=0, value=1)
-        
-    with c3:
-        mileage = st.number_input("Mileage (km)", min_value=0, value=50000, step=1000)
-        condition = st.number_input("Condition (Encoded)", min_value=0, value=1)
-        model_type = st.number_input("Model (Encoded)", min_value=0, value=1)
+    input_data = np.array([[present_price, kms_driven, owner, fuel, trans, car_age]])
+    prediction = model.predict(input_data)
 
-# 6. Prediction Logic
-st.markdown("###")
-if st.button("🚀 Calculate Estimated Value", use_container_width=True):
-    # Prepare features in the exact order found in ModelCR.pkl 
-    features = np.array([[car_id, brand, year, engine_size, fuel_type, 
-                          transmission, mileage, condition, model_type]])
+    st.markdown(f"<div class='result'>💰 Predicted Price: ₹ {round(prediction[0],2)} Lakhs</div>", unsafe_allow_html=True)
     
-    prediction = model.predict(features)
-    
-    st.markdown("---")
     st.balloons()
-    st.success(f"## 💰 Estimated Market Value: ${prediction[0]:,.2f}")

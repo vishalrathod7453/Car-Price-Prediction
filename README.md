@@ -161,26 +161,6 @@ Your application will be live within minutes.
 
 ---
 
-## 📈 Sample Prediction
-
-| Feature      | Value       |
-| ------------ | ----------- |
-| Year         | 2022        |
-| Fuel Type    | Petrol      |
-| Transmission | Manual      |
-| KM Driven    | 20,000      |
-| Owner        | First Owner |
-
-### Predicted Selling Price
-
-💰 ₹7.8 Lakhs
-
----
-
-
-
----
-
 ## 🌟 Future Enhancements
 
 * Machine Learning Model
@@ -204,6 +184,7 @@ Aspiring Data Analyst | Machine Learning Enthusiast | AI Developer
 🔗 LinkedIn: https://www.linkedin.com/in/vishal-rathod-0a2435386/
 
 🔗 GitHub: https://github.com/vishalrathod7453
+🔗 Streamlit:https://car-price-prediction-6xmbkn4rbwjfxmnunbfngn.streamlit.app/
 
 
 ---

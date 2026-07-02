@@ -184,6 +184,7 @@ Aspiring Data Analyst | Machine Learning Enthusiast | AI Developer
 🔗 LinkedIn: https://www.linkedin.com/in/vishal-rathod-0a2435386/
 
 🔗 GitHub: https://github.com/vishalrathod7453
+
 🔗 Streamlit:https://car-price-prediction-6xmbkn4rbwjfxmnunbfngn.streamlit.app/
 
 

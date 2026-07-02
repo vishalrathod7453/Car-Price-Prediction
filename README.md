@@ -164,7 +164,7 @@ Your application will be live within minutes.
 ## 🌟 Future Enhancements
 
 * Machine Learning Model
-* XGBoost Regressor
+* Linear Regression
 * Car Image-Based Prediction
 * API Integration
 * Mobile Responsive Dashboard
@@ -189,6 +189,3 @@ Aspiring Data Analyst | Machine Learning Enthusiast | AI Developer
 
 
 ---
-
-
-</div>
